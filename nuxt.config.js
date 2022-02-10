@@ -27,7 +27,13 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
+    '@nuxtjs/style-resources'
   ],
+
+  styleResources: {
+   scss: ['@/assets/scss/main.scss'],
+   hoistUseStatements: true  // Hoists the "@use" imports. Applies only to "sass", "scss" and "less". Default: false.
+ },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
