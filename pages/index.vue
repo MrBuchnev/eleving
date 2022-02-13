@@ -1,16 +1,9 @@
 <template>
-  <FormContainer />
+  <NuxtLink to="/form/contact-info">Show Form</NuxtLink>
 </template>
 
 <script>
-import Vue from 'vue'
-import FormContainer from '@/components/FormContainer'
-
-export default Vue.extend({
+export default {
   name: 'IndexPage',
-
-  components: {
-    FormContainer,
-  }
-})
+}
 </script>

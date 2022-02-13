@@ -52,7 +52,7 @@ export default {
     font-family: $font-bold;
     color: $grey-3;
     border: 2px solid $grey-3;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, color 0.2s ease;
   }
 
   .is-active &__index {
