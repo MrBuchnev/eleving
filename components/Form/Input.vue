@@ -118,7 +118,10 @@ export default {
     },
 
     removeField() {
-      this.$emit('remove-field', this.name);
+      this.model = ''
+      this.$nextTick(() => {
+        this.$emit('remove-field', this.name)
+      })
     }
   }
 }
@@ -193,6 +196,7 @@ export default {
   &__option {
     font-family: $font-bold;
     padding: 12px 16px;
+    text-transform: capitalize;
   }
 }
 
@@ -205,6 +209,7 @@ export default {
   border: 2px solid $grey-3;
   border-radius: 8px;
   padding: 0 16px;
+  text-transform: capitalize;
 
   &--dropdown {
     border-radius: 8px 0 0 8px;

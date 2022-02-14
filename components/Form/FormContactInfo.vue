@@ -1,18 +1,19 @@
 <template>
-  <form class="form" @submit="handleSubmit" novalidate>
+  <form novalidate>
     <h1 class="form-heading">{{ currentStep }}</h1>
 
     <Input
-      v-for="field in fields"
+      v-for="field in formData.fields"
       :key="field.name"
       :type="field.type"
       :label="field.label"
       :id="field.name"
       :name="field.name"
+      @input="handleInputValueChange(field, $event)"
     />
 
     <Input
-      v-for="phone in usedPhoneTypes"
+      v-for="phone in formData.usedPhoneTypes"
       :key="phone"
       type="tel"
       label="Phone"
@@ -22,6 +23,7 @@
       :dropdown-options="availablePhoneTypes"
       @select-option="handleSelectPhone"
       @remove-field="handleRemovePhone"
+      @input="handlePhoneValueChange(phone, $event)"
     />
 
     <button
@@ -72,39 +74,14 @@ export default {
   },
 
   props: {
-    currentStep: { type: String, required: true, default: '' }
+    currentStep: { type: String, required: true, default: '' },
+    formData: { type: Object, required: false, default: () => ({}) }
   },
 
   data() {
     return {
-      fields: [
-        {
-          type: 'text',
-          label: 'First name',
-          name: 'firstname'
-        },
-        {
-          type: 'text',
-          label: 'Last name',
-          name: 'lastname'
-        },
-        {
-          type: 'email',
-          label: 'E-mail',
-          name: 'email'
-        },
-      ],
-
-      usedPhoneTypes: [
-        'Home',
-        'Work'
-      ],
-
-      availablePhoneTypes: [
-        'Mobile',
-        'Main',
-        'Other'
-      ]
+      usedPhoneTypes: this.formData.usedPhoneTypes,
+      availablePhoneTypes: this.formData.availablePhoneTypes
     }
   },
 
@@ -119,9 +96,12 @@ export default {
   },
 
   methods: {
-    handleSubmit() {
-      e.preventDefault()
-      console.log('Submitting form...');
+    handleInputValueChange(field, val) {
+      this.$emit('field-value-change', field, val);
+    },
+
+    handlePhoneValueChange(phone, val) {
+      this.$emit('phone-value-change', phone, val);
     },
 
     handleSelectPhone(prevOption, currentOption) {
@@ -138,11 +118,19 @@ export default {
 
       this.usedPhoneTypes.splice(index, 1);
       this.availablePhoneTypes.push(phoneType);
+
+      this.emitPhoneHandleEvent();
     },
 
     handleAddPhone() {
       this.usedPhoneTypes.push(this.availablePhoneTypes[0]);
       this.availablePhoneTypes.splice(0, 1);
+
+      this.emitPhoneHandleEvent();
+    },
+
+    emitPhoneHandleEvent() {
+      this.$emit('handle-phone-add-or-delete', this.usedPhoneTypes, this.availablePhoneTypes)
     }
   }
 }

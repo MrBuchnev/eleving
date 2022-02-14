@@ -6,7 +6,7 @@
 import FormContainer from '@/components/FormContainer'
 
 export default {
-  name: 'Contact Info',
+  name: 'ContactInfo',
 
   components: {
     FormContainer,
