@@ -7,12 +7,14 @@
 
       <FormContactInfo
         v-if="currentStep === 1"
-        :current-step="steps[currentStep - 1]"
       />
 
       <FormMembership
         v-if="currentStep === 2"
-        :current-step="steps[currentStep - 1]"
+      />
+
+      <FormOverview
+        v-if="currentStep === 3"
       />
 
       <div class="btn-container">
@@ -48,6 +50,7 @@
 import StepsNav from '@/components/Form/StepsNav'
 import FormContactInfo from '@/components/Form/FormContactInfo'
 import FormMembership from '@/components/Form/FormMembership'
+import FormOverview from '@/components/Form/FormOverview'
 
 export default {
   name: 'FormContainer',
@@ -55,7 +58,8 @@ export default {
   components: {
     StepsNav,
     FormContactInfo,
-    FormMembership
+    FormMembership,
+    FormOverview
   },
 
   props: {
@@ -102,45 +106,5 @@ export default {
 
 .btn-container {
   margin-top: 32px;
-}
-
-.btn {
-  display: block;
-  text-align: center;
-  width: 100%;
-  border: 2px solid;
-  border-radius: 8px;
-  font-family: $font-bold;
-  font-size: 28px;
-  line-height: 60px;
-  transition: background-color 0.2 linear, color 0.2s linear;
-
-  & + & {
-    margin-top: 24px;
-  }
-
-  &--primary {
-    border-color: $primary;
-    background-color: $primary;
-    color: $white;
-  }
-
-  &--secondary {
-    border-color: $primary;
-    background-color: $white;
-    color: $primary;
-  }
-
-  @media (hover: hover) {
-    &--primary:hover {
-      background-color: $white;
-      color: $primary;
-    }
-
-    &--secondary:hover {
-      background-color: $primary;
-      color: $white;
-    }
-  }
 }
 </style>

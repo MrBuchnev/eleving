@@ -72,5 +72,10 @@ export const mutations = {
   changeMembership(state, { val }) {
     this.state.memberships.forEach(item => item.selected = false)
     this.state.memberships.find(item => item.label === val).selected = true
+  },
+
+  updatePhoneTypes(state, { usedPhones, availablePhones }) {
+    this.state.usedPhoneTypes = usedPhones
+    this.state.availablePhoneTypes = availablePhones
   }
 }

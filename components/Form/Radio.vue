@@ -1,5 +1,5 @@
 <template>
-  <div class="radio-btns">
+  <div class="radio-btns" :class="{ inline: inline }">
     <label v-for="(item, i) in options" :key="i" class="radio-btns__item">
       <input
         v-model="radioButtonValue"
@@ -23,7 +23,8 @@ export default {
   props: {
     name: { type: String, required: false, default: '' },
     selected: { type: String, required: false, default: '' },
-    options: { type: Array, required: true }
+    options: { type: Array, required: true, default: () => [] },
+    inline: { type: Boolean, required: false, default: false }
   },
 
   data() {
@@ -45,6 +46,10 @@ export default {
   display: flex;
   flex-direction: column;
 
+  &.inline {
+    flex-direction: row;
+  }
+
   &__item {
     display: flex;
     align-items: center;
@@ -52,6 +57,11 @@ export default {
 
   &__item + &__item {
     margin-top: 12px;
+  }
+
+  &.inline &__item + &__item {
+    margin-top: 0;
+    margin-left: 30px;
   }
 
   &__item-input {

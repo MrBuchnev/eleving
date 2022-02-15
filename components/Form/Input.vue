@@ -65,6 +65,7 @@
       >
 
       <button
+        v-if="removable"
         class="input-btn input-btn--remove"
         type="button"
         @click="removeField"
@@ -89,7 +90,8 @@ export default {
     required: { type: Boolean, required: false, default: false },
     hasError: { type: String, required: false, default: "" },
     dropdownOptions: { type: Array, required: false, default: () => [] },
-    selectedOption: { type: String, required: false, default: '' }
+    selectedOption: { type: String, required: false, default: '' },
+    removable: { type: Boolean, required: false, default: true }
   },
 
   data() {
