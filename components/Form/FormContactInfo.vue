@@ -18,7 +18,7 @@
       label="Phone"
       :id="`phone-${phone}`"
       :name="`phone-${phone}`"
-      :valye="getPhoneValue(phone)"
+      :value="getPhoneValue(phone)"
       :selected-option="phone"
       :dropdown-options="availablePhoneTypes"
       @select-option="handleSelectPhone"
@@ -47,10 +47,6 @@ export default {
 
   components: {
     Input
-  },
-
-  props: {
-    currentStep: { type: String, required: true, default: '' }
   },
 
   data() {
@@ -101,7 +97,7 @@ export default {
     getPhoneValue(phoneName) {
       const statePhoneName = `phone${phoneName.charAt(0).toUpperCase() + phoneName.slice(1)}`
 
-      return this.$store.state[phoneName];
+      return this.$store.state[statePhoneName];
     },
 
     handleSelectPhone(prevOption, currentOption) {

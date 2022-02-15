@@ -1,10 +1,10 @@
 export const state = () => ({
-  firstname: '',
-  lastname: '',
-  email: '',
+  firstname: 'John',
+  lastname: 'Smith',
+  email: 'john.smith@email.com',
 
-  phoneHome: '',
-  phoneWork: '',
+  phoneHome: '+371 11111111',
+  phoneWork: '+371 22222222',
   phoneMobile: '',
   phoneMain: '',
   phoneOther: '',
@@ -44,8 +44,13 @@ export const mutations = {
   },
 
   selectPhone(state, { prevOption, currentOption }) {
+    const statePrevPhoneName = `phone${prevOption.charAt(0).toUpperCase() + prevOption.slice(1)}`
+    const stateCurrentPhoneName = `phone${currentOption.charAt(0).toUpperCase() + currentOption.slice(1)}`
     const prevOptionIndex = this.state.usedPhoneTypes.indexOf(prevOption)
     const currentOptionIndex = this.state.availablePhoneTypes.indexOf(currentOption)
+
+    this.state[stateCurrentPhoneName] = this.state[statePrevPhoneName]
+    this.state[statePrevPhoneName] = ''
 
     this.state.usedPhoneTypes.splice(prevOptionIndex, 1, currentOption)
     this.state.availablePhoneTypes.splice(currentOptionIndex, 1, prevOption)

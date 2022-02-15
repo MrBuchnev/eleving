@@ -25,10 +25,6 @@ export default {
     Radio
   },
 
-  props: {
-    currentStep: { type: String, required: true, default: '' }
-  },
-
   data() {
     return {
       regularMembershipInfo:
