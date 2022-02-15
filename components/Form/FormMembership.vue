@@ -44,6 +44,8 @@
 <script>
 import Radio from '@/components/Form/Radio'
 
+import { mapMutations } from 'vuex';
+
 export default {
   name: 'FormMembership',
 
@@ -52,13 +54,11 @@ export default {
   },
 
   props: {
-    currentStep: { type: String, required: true, default: '' },
-    memberships: { type: Array, required: false, default: () => [] }
+    currentStep: { type: String, required: true, default: '' }
   },
 
   data() {
     return {
-      membershipNames: this.memberships.map(item => item.label),
       regularMembershipInfo:
         'Regular lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque urna, ligula eget maecenas. At pharetra fermentum augue egestas. Sed morbi sed est, ultrices in vel maecenas.',
       premiumMembershipInfo:
@@ -67,6 +67,14 @@ export default {
   },
 
   computed: {
+    memberships() {
+      return this.$store.state.memberships
+    },
+
+    membershipNames() {
+      return this.memberships.map(item => item.label)
+    },
+
     nextStep() {
       return this.currentStep === 'Personal info' ? '/form/membership' : '/form/overview'
     },
@@ -86,7 +94,7 @@ export default {
 
   methods: {
     handleRadioValueChange(val) {
-      this.$emit('radio-value-change', val);
+      this.$store.commit('changeMembership', { val })
     }
   }
 }

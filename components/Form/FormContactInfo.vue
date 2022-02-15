@@ -3,22 +3,24 @@
     <h1 class="form-heading">{{ currentStep }}</h1>
 
     <Input
-      v-for="field in formData.fields"
+      v-for="field in fields"
       :key="field.name"
       :type="field.type"
       :label="field.label"
       :id="field.name"
       :name="field.name"
-      @input="handleInputValueChange(field, $event)"
+      :value="getFieldValue(field.name)"
+      @input="handleInputValueChange(field.name, $event)"
     />
 
     <Input
-      v-for="phone in formData.usedPhoneTypes"
+      v-for="phone in usedPhoneTypes"
       :key="phone"
       type="tel"
       label="Phone"
       :id="`phone-${phone}`"
       :name="`phone-${phone}`"
+      :valye="getPhoneValue(phone)"
       :selected-option="phone"
       :dropdown-options="availablePhoneTypes"
       @select-option="handleSelectPhone"
@@ -66,6 +68,8 @@
 <script>
 import Input from '@/components/Form/Input'
 
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'FormContactInfo',
 
@@ -74,18 +78,40 @@ export default {
   },
 
   props: {
-    currentStep: { type: String, required: true, default: '' },
-    formData: { type: Object, required: false, default: () => ({}) }
+    currentStep: { type: String, required: true, default: '' }
   },
 
   data() {
     return {
-      usedPhoneTypes: this.formData.usedPhoneTypes,
-      availablePhoneTypes: this.formData.availablePhoneTypes
+      fields: [
+        {
+          type: 'text',
+          label: 'First name',
+          name: 'firstname',
+        },
+        {
+          type: 'text',
+          label: 'Last name',
+          name: 'lastname',
+        },
+        {
+          type: 'email',
+          label: 'E-mail',
+          name: 'email',
+        },
+      ]
     }
   },
 
   computed: {
+    usedPhoneTypes() {
+      return this.$store.state.usedPhoneTypes
+    },
+
+    availablePhoneTypes() {
+      return this.$store.state.availablePhoneTypes
+    },
+
     nextStep() {
       return this.currentStep === 'Personal info' ? '/form/membership' : '/form/overview'
     },
@@ -96,41 +122,34 @@ export default {
   },
 
   methods: {
-    handleInputValueChange(field, val) {
-      this.$emit('field-value-change', field, val);
+    handleInputValueChange(fieldName, val) {
+      this.$store.commit('changeFieldValue', { fieldName, val })
     },
 
-    handlePhoneValueChange(phone, val) {
-      this.$emit('phone-value-change', phone, val);
+    handlePhoneValueChange(phoneName, val) {
+      this.$store.commit('changePhoneValue', { phoneName, val })
+    },
+
+    getFieldValue(fieldName) {
+      return this.$store.state[fieldName]
+    },
+
+    getPhoneValue(phoneName) {
+      const statePhoneName = `phone${phoneName.charAt(0).toUpperCase() + phoneName.slice(1)}`
+
+      return this.$store.state[phoneName];
     },
 
     handleSelectPhone(prevOption, currentOption) {
-      const prevOptionIndex = this.usedPhoneTypes.indexOf(prevOption);
-      const currentOptionIndex = this.availablePhoneTypes.indexOf(currentOption);
-
-      this.usedPhoneTypes.splice(prevOptionIndex, 1, currentOption);
-      this.availablePhoneTypes.splice(currentOptionIndex, 1, prevOption);
+      this.$store.commit('selectPhone', { prevOption, currentOption })
     },
 
     handleRemovePhone(phone) {
-      const phoneType = phone.split('phone-').pop()
-      const index = this.usedPhoneTypes.indexOf(phoneType);
-
-      this.usedPhoneTypes.splice(index, 1);
-      this.availablePhoneTypes.push(phoneType);
-
-      this.emitPhoneHandleEvent();
+      this.$store.commit('removePhone', { phone })
     },
 
     handleAddPhone() {
-      this.usedPhoneTypes.push(this.availablePhoneTypes[0]);
-      this.availablePhoneTypes.splice(0, 1);
-
-      this.emitPhoneHandleEvent();
-    },
-
-    emitPhoneHandleEvent() {
-      this.$emit('handle-phone-add-or-delete', this.usedPhoneTypes, this.availablePhoneTypes)
+      this.$store.commit('addPhone')
     }
   }
 }
