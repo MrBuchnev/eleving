@@ -2,17 +2,45 @@
   <div class="container">
     <StepsNav :steps="steps" :current-step="currentStep" />
 
-    <FormContactInfo
-      v-if="currentStep === 1"
-      class="form"
-      :current-step="steps[currentStep - 1]"
-    />
+    <form class="form">
+      <h1 class="form-heading">{{ steps[currentStep - 1] }}</h1>
 
-    <FormMembership
-      v-if="currentStep === 2"
-      class="form"
-      :current-step="steps[currentStep - 1]"
-    />
+      <FormContactInfo
+        v-if="currentStep === 1"
+        :current-step="steps[currentStep - 1]"
+      />
+
+      <FormMembership
+        v-if="currentStep === 2"
+        :current-step="steps[currentStep - 1]"
+      />
+
+      <div class="btn-container">
+        <NuxtLink
+          v-if="currentStep !== 3"
+          class="btn btn--primary"
+          :to="nextStep"
+        >
+          Continue
+        </NuxtLink>
+
+        <button
+          v-if="currentStep === 3"
+          class="btn btn--primary"
+          type="submit"
+        >
+          Submit
+        </button>
+
+        <NuxtLink
+          v-if="currentStep !== 1"
+          class="btn btn--secondary"
+          :to="prevStep"
+        >
+          Back
+        </NuxtLink>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -33,6 +61,16 @@ export default {
   props: {
     steps: { type: Array, required: true, default: () => [] },
     currentStep: { type: Number, required: true, default: 1 }
+  },
+
+  computed: {
+    nextStep() {
+      return this.currentStep === 1 ? '/form/membership' : '/form/overview'
+    },
+
+    prevStep() {
+      return this.currentStep === 3 ? '/form/membership' : '/form/contact-info'
+    },
   }
 }
 </script>
@@ -52,5 +90,57 @@ export default {
   border-radius: 16px;
   padding: 32px;
   margin: 130px auto 0;
+}
+
+.form-heading {
+  font-family: $font-bold;
+  font-size: 28px;
+  line-height: 38px;
+  color: $primary;
+  margin-bottom: 16px;
+}
+
+.btn-container {
+  margin-top: 32px;
+}
+
+.btn {
+  display: block;
+  text-align: center;
+  width: 100%;
+  border: 2px solid;
+  border-radius: 8px;
+  font-family: $font-bold;
+  font-size: 28px;
+  line-height: 60px;
+  transition: background-color 0.2 linear, color 0.2s linear;
+
+  & + & {
+    margin-top: 24px;
+  }
+
+  &--primary {
+    border-color: $primary;
+    background-color: $primary;
+    color: $white;
+  }
+
+  &--secondary {
+    border-color: $primary;
+    background-color: $white;
+    color: $primary;
+  }
+
+  @media (hover: hover) {
+    &--primary:hover {
+      background-color: $white;
+      color: $primary;
+    }
+
+    &--secondary:hover {
+      background-color: $primary;
+      color: $white;
+    }
+  }
 }
 </style>
