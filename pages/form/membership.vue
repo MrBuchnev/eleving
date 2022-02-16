@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import FormContainer from '@/components/FormContainer'
+import FormContainer from '@/components/Form/FormContainer'
 
 export default {
   name: 'Membership',
