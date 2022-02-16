@@ -59,6 +59,7 @@
       <input
         class="input input--phone"
         v-model="model"
+        v-mask="'+371 ########'"
         :id="id"
         :type="type"
         :name="name"
