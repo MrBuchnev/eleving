@@ -1,10 +1,10 @@
 export const state = () => ({
-  firstname: 'John',
-  lastname: 'Smith',
-  email: 'john.smith@email.com',
+  firstname: '',
+  lastname: '',
+  email: '',
 
-  phoneHome: '+371 11111111',
-  phoneWork: '+371 22222222',
+  phoneHome: '',
+  phoneWork: '',
   phoneMobile: '',
   phoneMain: '',
   phoneOther: '',
